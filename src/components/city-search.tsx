@@ -12,7 +12,7 @@ import {
 import { Clock, Loader2, Search, Star, XCircle } from "lucide-react";
 import { useLocationSearch } from "@/hooks/use-weather";
 import { useNavigate } from "react-router-dom";
-import { useSearchHistory } from "@/hooks/use-search-istory";
+import { useSearchHistory } from "@/hooks/use-search-history";
 import { format } from "date-fns";
 import { useFavorite } from "@/hooks/use-favorite";
 
