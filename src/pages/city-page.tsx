@@ -16,6 +16,7 @@ const CityPage = () => {
 
   const lat = parseFloat(searchParams.get("lat") || "0");
   const lon = parseFloat(searchParams.get("lon") || "0");
+  const state = searchParams.get("state") || "";
 
   const coordinates = { lat, lon };
 
@@ -42,11 +43,16 @@ const CityPage = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">
-          {params.cityName}, {weatherQuery.data.sys.country}
+          {params.cityName},{state ? ` ${state}, ` : " "}
+          {weatherQuery.data.sys.country}
         </h1>
         <div>
           <FavoriteButton
-            data={{ ...weatherQuery.data, name: params.cityName }}
+            data={{
+              ...weatherQuery.data,
+              name: params.cityName,
+              state,
+            }}
           />
         </div>
       </div>

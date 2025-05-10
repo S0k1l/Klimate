@@ -41,6 +41,7 @@ export interface WeatherData {
   };
   name: string;
   dt: number;
+  state?: string;
 }
 
 export interface ForecastData {

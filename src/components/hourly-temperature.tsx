@@ -16,7 +16,7 @@ interface Props {
 
 const HourlyTemperature = ({ data }: Props) => {
   const chartData = data.list.slice(0, 8).map((item) => ({
-    time: format(new Date(item.dt * 1000), "ha"),
+    time: format(new Date(item.dt * 1000), "HH:mm"),
     temp: Math.round(item.main.temp),
     feels_like: Math.round(item.main.feels_like),
   }));

@@ -22,6 +22,7 @@ function FavoriteButton({ data }: Props) {
         lat: data.coord.lat,
         lon: data.coord.lon,
         country: data.sys.country,
+        state: data.state,
       });
       toast.success(`Added ${data.name} to Favorites`);
     }

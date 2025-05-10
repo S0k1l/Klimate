@@ -9,6 +9,7 @@ import { toast } from "sonner";
 interface FavoriteCityTabletProps {
   id: string;
   name: string;
+  state?: string;
   lat: number;
   lon: number;
   onRemove: (id: string) => void;
@@ -43,6 +44,7 @@ const FavoriteCities = () => {
 
 function FavoriteCityTablet({
   id,
+  state,
   name,
   lat,
   lon,
@@ -51,9 +53,18 @@ function FavoriteCityTablet({
   const navigate = useNavigate();
   const { data: weather, isLoading } = useWeatherQuery({ lat, lon });
 
+  const handleNavigation = () => {
+    const queryParams = new URLSearchParams();
+    if (state) queryParams.append("state", state);
+    queryParams.append("lat", lat.toString());
+    queryParams.append("lon", lon.toString());
+
+    navigate(`/city/${name}?${queryParams.toString()}`);
+  };
+
   return (
     <div
-      onClick={() => navigate(`/city/${name}?lat=${lat}&lon=${lon}`)}
+      onClick={handleNavigation}
       role="button"
       tabIndex={0}
       className="relative flex min-w-[250px] cursor-pointer items-center gap-3 rounded-lg border bg-card p-4 pr-8 shadow-sm transition-all hover:shadow-md"
@@ -85,6 +96,7 @@ function FavoriteCityTablet({
             <div>
               <p className="font-medium">{name}</p>
               <p className="text-xs text-muted-foreground">
+                {state ? `${state}, ` : ""}
                 {weather.sys.country}
               </p>
             </div>

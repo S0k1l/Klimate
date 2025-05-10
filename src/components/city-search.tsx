@@ -26,7 +26,7 @@ const CitySearch = () => {
   const { favorites } = useFavorite();
 
   const handleSelect = (cityData: string) => {
-    const [lat, lon, name, country] = cityData.split("|");
+    const [lat, lon, name, country, state] = cityData.split("|");
 
     addToHistory.mutate({
       query,
@@ -34,13 +34,19 @@ const CitySearch = () => {
       lat: parseFloat(lat),
       lon: parseFloat(lon),
       country,
+      state,
     });
 
     setOpen(false);
-    navigate(`/city/${name}?lat=${lat}&lon=${lon}`);
+
+    const queryParams = new URLSearchParams();
+    if (state) queryParams.append("state", state);
+    queryParams.append("lat", lat);
+    queryParams.append("lon", lon);
+
+    navigate(`/city/${name}?${queryParams.toString()}`);
   };
 
-  console.log(locations);
   return (
     <>
       <Button
@@ -70,20 +76,22 @@ const CitySearch = () => {
                 return (
                   <CommandItem
                     key={item.id}
-                    value={`${item.lat}|${item.lon}|${item.name}|${item.country}`}
+                    value={`${item.lat}|${item.lon}|${item.name}|${
+                      item.country
+                    }|${item.state ? item.state : ""}`}
                     onSelect={handleSelect}
                   >
                     <Star className="mr-2 h-4 w-4 text-yellow-500" />
-                    <span>{item.name}</span>
+                    <span>{item.name}, </span>
 
                     {item.state && (
                       <span className="text-sm text-muted-foreground">
-                        , {item.state}
+                        {item.state},
                       </span>
                     )}
 
                     <span className="text-sm text-muted-foreground">
-                      , {item.country}
+                      {item.country}
                     </span>
                   </CommandItem>
                 );
@@ -112,20 +120,22 @@ const CitySearch = () => {
                   return (
                     <CommandItem
                       key={`${item.lat}-${item.lon}`}
-                      value={`${item.lat}|${item.lon}|${item.name}|${item.country}`}
+                      value={`${item.lat}|${item.lon}|${item.name}|${
+                        item.country
+                      }|${item.state ? item.state : ""}`}
                       onSelect={handleSelect}
                     >
                       <Clock className="mr-2 h-4 w-4 text-muted-foreground" />
-                      <span>{item.name}</span>
+                      <span>{item.name},</span>
 
                       {item.state && (
                         <span className="text-sm text-muted-foreground">
-                          , {item.state}
+                          {item.state},
                         </span>
                       )}
 
                       <span className="text-sm text-muted-foreground">
-                        , {item.country}
+                        {item.country}
                       </span>
                       <span className="ml-auto text-xs text-muted-foreground">
                         {format(item.searchedAt, "MMM d, h:mm a")}
@@ -150,20 +160,22 @@ const CitySearch = () => {
                 return (
                   <CommandItem
                     key={`${location.lat}-${location.lon}`}
-                    value={`${location.lat}|${location.lon}|${location.name}|${location.country}`}
+                    value={`${location.lat}|${location.lon}|${location.name}|${
+                      location.country
+                    }|${location.state ? location.state : ""}`}
                     onSelect={handleSelect}
                   >
                     <Search className="mr-2 h-4 w-4" />
-                    <span>{location.name}</span>
+                    <span>{location.name}, </span>
 
                     {location.state && (
                       <span className="text-sm text-muted-foreground">
-                        , {location.state}
+                        {location.state},
                       </span>
                     )}
 
                     <span className="text-sm text-muted-foreground">
-                      , {location.country}
+                      {location.country}
                     </span>
                   </CommandItem>
                 );
